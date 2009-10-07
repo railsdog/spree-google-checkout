@@ -1,0 +1,2 @@
+module GoogleCheckoutNotificationHelper
+end

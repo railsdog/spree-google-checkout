@@ -1,0 +1,17 @@
+<%if order.google_order_number.present?%>
+	   <td> <div id="button_<%= order.number%>"><input type="submit"  value="Cancel" onclick= "return loadPopup('<%= order.number%>'); " /></div></td>
+	   <td><%= link_to "Charge", charge_google_order_admin_order_path(order)%></td>
+	   	 <td><div class="pop-contact" id="popupContact_<%= order.number %>">  
+         <a id="popupContactClose" onclick="return disablePopup('<%= order.number%>');">x</a> 
+        <%form_tag cancel_google_checkout_order_admin_order_path(order) , :method => :get do %>
+		    <p>Order no. <%=h order.number %> to cancel</p>
+			<p><%= select_tag :reason ,%{<option value="">Select Type</option>} + options_for_select( [["Accounts Approved"],["Accounts pending"],["Accounts Matured"],["Accounts Closed"]], params[:reason])%></p>
+			<p><%= text_field_tag  :comment , params[:comment]%></p>
+			<p><%= submit_tag "Cancel Order"%></p>
+			<p class="green">An email will be sent to notify the buyer of this action.</p>	
+		<% end %>
+       </div>  
+      <div id="backgroundPopup"></div></td> 
+	  <%else%>
+	  <td colspan="3"></td>
+	   <% end %>

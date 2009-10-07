@@ -1,0 +1,15 @@
+<% unless @order.line_items.empty? -%>
+
+    <% if @response %> 
+		<%# link_to image_tag("http://sandbox.google.com/checkout/buttons/checkout.gif?merchant_id=114190407551986 &w=180&h=46&style=white&variant=text&loc=en_US"), google_checkout_order_path(@order, {:format => :xml})%>
+		<form method="POST" 
+		    action="https://sandbox.google.com/checkout/api/checkout/v2/checkout/Merchant/<%=@gc_configuration[:merchant_id]%>">
+				<%= hidden_field_tag :cart, "#{Base64.b64encode(@response)}"%>
+				<%= hidden_field_tag :signature, "#{signature(@response, @gc_configuration[:merchant_key])}"%>
+				 <%= puts "=-=-=-=-=-=-=-=-#{@response}"%>
+			 <input type="image" name="Google Checkout" alt="Fast checkout through Google"
+				  src="http://sandbox.google.com/checkout/buttons/checkout.gif?merchant_id=<%=@gc_configuration[:merchant_id]%>&w=180&h=46&style=white&variant=text&loc=en_US"  height="46" width="180">
+		</form>
+
+	 <%end%>
+<%end%>	 
