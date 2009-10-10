@@ -35,6 +35,14 @@ class GoogleCheckoutExtension < Spree::Extension
       end 
     end
     
+    Order.class_eval do
+      def restock_inventory
+        inventory_units.each do |inventory_unit|
+          inventory_unit.restock!
+        end
+      end
+    end
+    
     Admin::OrdersController.class_eval do
       include GoogleCheckout::ControllerExtender
         
@@ -67,8 +75,8 @@ class GoogleCheckoutExtension < Spree::Extension
             order = @frontend.create_cancel_order_command
             o = Order.find_by_number(params[:id])
             order.google_order_number = o.google_order_number if o.google_order_number.present? 
-            order.reason = params[:reason]
-            order.comment = params[:comment]
+            order.reason = params[o.number][:reason]
+            order.comment = params[o.number][:comment]
             res = order.send_to_google_checkout
             
             o.cancel!
