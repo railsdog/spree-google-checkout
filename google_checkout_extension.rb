@@ -114,20 +114,18 @@ class GoogleCheckoutExtension < Spree::Extension
           checkout_command.edit_cart_url = edit_order_url(@order)
           checkout_command.continue_shopping_url = order_url(@order)
        
-          #Create a flat rate shipping method
-          i = 50
+          fake_shipment = Shipment.new :order => @order, :address => @order.ship_address
           ShippingMethod.all.each do |ship_method| 
          
             checkout_command.create_shipping_method(Google4R::Checkout::FlatRateShipping) do |shipping_method|    
-              shipping_method.name = ship_method.name #"UPS Standard 3 Day"
-              shipping_method.price = Money.new(i, @gc_currency)
+              shipping_method.name = ship_method.name
+              shipping_method.price = Money.new(100*ship_method.calculate_cost(fake_shipment), @gc_currency)
               shipping_method.create_allowed_area(Google4R::Checkout::UsCountryArea) do |area|
                 area.area = Google4R::Checkout::UsCountryArea::ALL
-              end 
-              i += 50
+              end
             end       
           end 
-          @response = checkout_command.to_xml       #send_to_google_checkout    # 
+          @response = checkout_command.to_xml #send_to_google_checkout
 
           # puts "===========#{request.raw_post}"
        end

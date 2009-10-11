@@ -42,6 +42,9 @@ class GoogleCheckoutNotificationController < ApplicationController
                     
           @order.shipment.update_attribute(:address_id,  new_shipping_address.id)
           
+          ship_method = ShippingMethod.find_by_name(notification.order_adjustment.shipping.name)      
+          @order.shipment.update_attribute(:shipping_method, ship_method)
+          
           @order.complete!
         end
         render :text => 'proccess Google4R::Checkout::NewOrderNotification'
