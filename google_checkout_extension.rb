@@ -8,14 +8,12 @@ end
 
 class GoogleCheckoutExtension < Spree::Extension
   version "1.0"
-  description "Provides google checkout payment gateway functionality.  User specifies an GoogleCheckout compatible gateway 
-  to use in the aplication."
-  #url "http://yourwebsite.com/google_checkout"
+  description "Provides google checkout payment gateway functionality.  User specifies an GoogleCheckout compatible gateway to use in the aplication."
+  url "http://github.com/romul/spree-google-checkout"
 
   # Please use google_checkout/config/routes.rb instead for extension routes.
 
   def self.require_gems(config)
-    config.gem 'oauth'
     config.gem 'google4r-checkout', :lib => 'google4r/checkout'
   end
   
@@ -23,6 +21,7 @@ class GoogleCheckoutExtension < Spree::Extension
     
     if Spree::Config.instance
       Spree::Config.set(:google_checkout_button => true)
+      Spree::Config.set(:use_google_sandbox => true)
     end
     
     Spree::BaseHelper.module_eval do
@@ -94,9 +93,9 @@ class GoogleCheckoutExtension < Spree::Extension
     
     OrdersController.class_eval do
       include GoogleCheckout::ControllerExtender
+      helper :google_checkout
       
       def edit
-        # set use_sandbox to false for production
         @frontend = get_google_checkout_frontend 
         if @frontend     
           @frontend.tax_table_factory = TaxTableFactory.new
