@@ -7,6 +7,8 @@ en-US:
     order_cancel_failed: "Order cancel failed"
     order_charged: "Order successfully changed"
     order_charge_failed: "Order charge failed"
+  google_checkout_status: "Google Checkout"
   comment: "Comment"   
   reason: "Reason"
+  
    

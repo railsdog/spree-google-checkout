@@ -14,6 +14,7 @@ class GoogleCheckoutExtension < Spree::Extension
   # Please use google_checkout/config/routes.rb instead for extension routes.
 
   def self.require_gems(config)
+    config.gem 'oauth'
     config.gem 'google4r-checkout', :lib => 'google4r/checkout'
   end
   

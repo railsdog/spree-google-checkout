@@ -7,6 +7,7 @@ ru-RU:
     order_cancel_failed: "Не удалось отменить заказ"
     order_charged: "Заказ успешно оплачен"
     order_charge_failed: "Оплата заказа не прошла"
+  google_checkout_status: "Google Checkout"
   comment: "Комментарий"   
   reason: "Причина"
    
