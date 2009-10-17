@@ -18,12 +18,10 @@ class GoogleCheckoutExtension < Spree::Extension
     config.gem 'google4r-checkout', :lib => 'google4r/checkout'
   end
   
-  def activate   
-    
-    if Spree::Config.instance
-      Spree::Config.set(:google_checkout_button => true)
-      Spree::Config.set(:use_google_sandbox => true)
-    end
+  def activate       
+                                               
+    # register the BillingIntegration
+    Billing::GoogleCheckout.register
     
     Spree::BaseHelper.module_eval do
       def signature(base_string, consumer_secret)
@@ -45,15 +43,15 @@ class GoogleCheckoutExtension < Spree::Extension
     
     Admin::OrdersController.class_eval do
       include GoogleCheckout::ControllerExtender
-        
+              
       def charge_google_order
         begin
-          @frontend = get_google_checkout_frontend 
+          @frontend = get_google_checkout_frontend
           if @frontend 
             order = @frontend.create_charge_order_command
             o = Order.find_by_number(params[:id])
             order.google_order_number = o.google_order_number if o.google_order_number.present? 
-            order.amount = Money.new(100 * o.total, @gc_currency)            
+            order.amount = Money.new(100 * o.total, Billing::GoogleCheckout.current[:currency])            
             res = order.send_to_google_checkout
                                         
             payment = Payment.new(:amount => o.total)
@@ -70,7 +68,7 @@ class GoogleCheckoutExtension < Spree::Extension
     
       def cancel_google_checkout_order
         begin
-          @frontend = get_google_checkout_frontend 
+          @frontend = get_google_checkout_frontend
           if @frontend    
             order = @frontend.create_cancel_order_command
             o = Order.find_by_number(params[:id])
@@ -93,20 +91,19 @@ class GoogleCheckoutExtension < Spree::Extension
     
     
     OrdersController.class_eval do
-      include GoogleCheckout::ControllerExtender
       helper :google_checkout
+      include GoogleCheckout::ControllerExtender
       
       def edit
         @frontend = get_google_checkout_frontend 
         if @frontend     
-          @frontend.tax_table_factory = TaxTableFactory.new
           checkout_command = @frontend.create_checkout_command
           # Adding an item to shopping cart
           @order.line_items.each do |l|
             checkout_command.shopping_cart.create_item do |item|  
               item.name = l.product.name
               item.description = l.product.description
-              item.unit_price = Money.new(100 * l.price, @gc_currency)    
+              item.unit_price = Money.new(100 * l.price, Billing::GoogleCheckout.current[:currency])    
               item.quantity = l.quantity
             end
           end
@@ -119,7 +116,7 @@ class GoogleCheckoutExtension < Spree::Extension
          
             checkout_command.create_shipping_method(Google4R::Checkout::FlatRateShipping) do |shipping_method|    
               shipping_method.name = ship_method.name
-              shipping_method.price = Money.new(100*ship_method.calculate_cost(fake_shipment), @gc_currency)
+              shipping_method.price = Money.new(100*ship_method.calculate_cost(fake_shipment), Billing::GoogleCheckout.current[:currency])
               shipping_method.create_allowed_area(Google4R::Checkout::UsCountryArea) do |area|
                 area.area = Google4R::Checkout::UsCountryArea::ALL
               end

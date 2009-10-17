@@ -10,5 +10,9 @@ en-US:
   google_checkout_status: "Google Checkout"
   comment: "Comment"   
   reason: "Reason"
+  use_sandbox: Sandbox
+  merchant_id: Merchant Id
+  merchant_key: Merchant Key    
+  currency: Currency
   
    
