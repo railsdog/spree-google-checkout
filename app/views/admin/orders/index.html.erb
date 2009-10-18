@@ -10,7 +10,7 @@
       <th><%= order @search, :by => :state,            :as => t("status") %></th>
       <th><%= order @search, :by => :checkout_email,   :as => t("customer") %></th>
       <th><%= order @search, :by => :total,            :as => t("total") %></th>
-      <% if Spree::Config[:google_checkout_button] -%>
+      <% if Billing::GoogleCheckout.current -%>
       <th colspan="3"><%= t(:google_checkout_status) %></th>
       <% end -%>
     </tr>
@@ -23,7 +23,7 @@
       <td><%= t(order.state.downcase) %></td>
       <td><%= order.email %></td>
       <td><%= number_to_currency order.total %></td>
-      <%= render :partial => 'admin/shared/google_checkout_status', :locals =>{:order => order} if Spree::Config[:google_checkout_button] %>
+      <%= render :partial => 'admin/shared/google_checkout_status', :locals =>{:order => order} if Billing::GoogleCheckout.current %>
     </tr>
   <% end %>
   </tbody>

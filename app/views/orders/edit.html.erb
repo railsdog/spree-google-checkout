@@ -20,4 +20,4 @@
   </p>
   <% end -%>
 <% end -%>
-<%= render :partial => 'shared/google_checkout_bar' if Spree::Config[:google_checkout_button] %>
+<%= render :partial => 'shared/google_checkout_bar' if Billing::GoogleCheckout.current %>
