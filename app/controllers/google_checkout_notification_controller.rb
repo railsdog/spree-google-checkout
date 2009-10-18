@@ -13,12 +13,11 @@ class GoogleCheckoutNotificationController < ApplicationController
         @order = Order.find_by_id(params[:new_order_notification][:shopping_cart][:merchant_private_data][:order_number].strip.to_i)
         
         unless @order.allow_pay?       
-          @order.user = current_user if current_user
+          @order.update_attribute("user_id", current_user) if current_user
           
           checkout_info = params[:new_order_notification]
           checkout_attrs = {
             :email => checkout_info[:email],
-            :completed_at => Date.today,
             :ip_address => request.env['REMOTE_ADDR']         
           }        
           @order.checkout.update_attributes(checkout_attrs)
@@ -47,7 +46,7 @@ class GoogleCheckoutNotificationController < ApplicationController
           
           @order.complete!
         end
-        render :text => 'proccess Google4R::Checkout::NewOrderNotification'
+        render :text => 'proccess Google4R::Checkout::NewOrderNotification' and return
       end
       
       if notification.is_a?(Google4R::Checkout::ChargeAmountNotification)
@@ -55,14 +54,13 @@ class GoogleCheckoutNotificationController < ApplicationController
         payment = Payment.new(:amount => notification.latest_charge_amount)
         payment.order = @order
         payment.save
-        render :text => 'proccess Google4R::Checkout::ChargeAmountNotification'
+        render :text => 'proccess Google4R::Checkout::ChargeAmountNotification' and return
       end
       
     rescue Google4R::Checkout::UnknownNotificationType => e
       # This can happen if Google adds new commands and Google4R has not been
       # upgraded yet. It is not fatal.
-      render :text => 'ignoring unknown notification type', :status => 200
-      return
+      render :text => 'ignoring unknown notification type', :status => 200 and return
     end
   end
  
