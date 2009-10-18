@@ -109,7 +109,7 @@ class GoogleCheckoutExtension < Spree::Extension
           end
           checkout_command.shopping_cart.private_data = { 'order_number' => @order.id } 
           checkout_command.edit_cart_url = edit_order_url(@order)
-          checkout_command.continue_shopping_url = order_url(@order)
+          checkout_command.continue_shopping_url = order_url(@order, :checkout_complete => true)
        
           fake_shipment = Shipment.new :order => @order, :address => @order.ship_address
           ShippingMethod.all.each do |ship_method| 
