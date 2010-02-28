@@ -15,4 +15,8 @@ class Billing::GoogleCheckout < BillingIntegration
       super
     end
   end
+  
+  def self.current
+    self.first(:conditions => {:type => self.to_s, :environment => RAILS_ENV, :active => true})
+  end
 end
