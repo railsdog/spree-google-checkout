@@ -9,6 +9,10 @@ class Billing::GoogleCheckout < BillingIntegration
   end
   
   def [](config_setting)
-    self.send("preferred_#{config_setting}")
+    begin
+      self.send("preferred_#{config_setting}")
+    rescue NoMethodError
+      super
+    end
   end
 end
