@@ -3,8 +3,8 @@ Google Checkout
 
 ### Installation
 
-1. Run `script/extension install git://github.com/romul/spree-google-checkout.git`
-1. Run `db:migrate`
+1. Run `script/extension install git://github.com/railsdog/spree-google-checkout.git`
+1. Run `rake db:migrate`
 1. Create seller account in Google Checkout
 1. Open `https://sandbox.google.com/checkout/sell/settings?section=Integration` 
 or `https://checkout.google.com/sell/settings?section=Integration`
