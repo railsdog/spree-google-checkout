@@ -11,7 +11,7 @@ or `https://checkout.google.com/sell/settings?section=Integration`
 1. remember your merchant ID and merchant key
 1. set 'API callback URL' to `http://your.spree.site/google_checkout_notification`
 1. select 'Notification as XML'
-1. Create a billing integration using `http://your.spree.site/admin/billing_configurations` and set the merchant ID, etc.
+1. Create a billing integration using `http://your.spree.site/admin/payment_methods` and set the merchant ID, etc.
 
 
 ### Usage
