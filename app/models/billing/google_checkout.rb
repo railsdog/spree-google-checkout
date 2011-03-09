@@ -17,6 +17,6 @@ class Billing::GoogleCheckout < BillingIntegration
   end
   
   def self.current
-    self.first(:conditions => {:type => self.to_s, :environment => RAILS_ENV, :active => true})
+    self.where(:type => self.to_s, :environment => Rails.env, :active => true).first
   end
 end

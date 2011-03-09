@@ -1,9 +1,11 @@
-# Put your extension routes here.
-map.resources :google_checkout_notification
-
-map.namespace :admin do |admin|  
-admin.resources :orders, :member => {:charge_google_order => :get, :cancel_google_checkout_order => :get}
+Rails.application.routes.draw do
+  resources :google_checkout_notification
+  namespace :admin do
+    resources :orders do 
+      member do
+        get :charge_google_order
+        get :cancel_google_checkout_order
+      end
+    end
+  end
 end
-# map.namespace :admin do |admin|
-#   admin.resources :whatever
-# end  

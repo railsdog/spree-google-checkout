@@ -1,5 +1,5 @@
 ---
-ru-RU:
+ru:
   google_checkout:
     cancel_order: "Отменить заказ"
     charge: "Принять оплату"

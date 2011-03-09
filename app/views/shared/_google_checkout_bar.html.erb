@@ -1,4 +1,4 @@
-<% unless @order.line_items.empty? || @response.nil? 
+<% if Billing::GoogleCheckout.current && @order.line_items.present? && @response
     handler_url = Billing::GoogleCheckout.current[:use_sandbox] ?
       "https://sandbox.google.com/checkout/" : "https://checkout.google.com/"   
     handler_url += "api/checkout/v2/checkout/Merchant/#{Billing::GoogleCheckout.current[:merchant_id]}"
