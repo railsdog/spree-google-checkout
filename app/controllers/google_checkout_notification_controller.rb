@@ -19,7 +19,7 @@ class GoogleCheckoutNotificationController < ApplicationController
 
           order_attrs = {
             :email => checkout_info[:email],
-            :ip_address => request.env['REMOTE_ADDR'] 
+            :ip_address => request.env['REMOTE_ADDR'],
             :adjustment_total => notification.order_adjustment.adjustment_total.cents.to_f / 100, 
             :buyer_id => notification.buyer_id,
             :financial_order_state => notification.financial_order_state, 
@@ -31,15 +31,16 @@ class GoogleCheckoutNotificationController < ApplicationController
           new_billing_address = 
             create_spree_address_from_google_address(notification.buyer_billing_address)
                
-          @order.update_attribute(:bill_address_id,  new_billing_address.id)
+          @order['bill_address_id'] = new_billing_address.id
           
           new_shipping_address = 
             create_spree_address_from_google_address(notification.buyer_shipping_address)
                     
-          @order.update_attribute(:address_id,  new_shipping_address.id)
+          @order['ship_address_id'] = new_shipping_address.id
           
           ship_method = ShippingMethod.find_by_name(notification.order_adjustment.shipping.name)      
-          @order.update_attribute(:shipping_method, ship_method)
+          @order.shipping_method = ship_method
+          @order.save
           
           @order.next while @order.state != "complete"
         end
