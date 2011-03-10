@@ -12,17 +12,14 @@ class GoogleCheckoutNotificationController < ApplicationController
       if notification.is_a?(Google4R::Checkout::NewOrderNotification)
         @order = Order.find_by_id(params[:new_order_notification][:shopping_cart][:merchant_private_data][:order_number].strip.to_i)
         
-        unless @order.allow_pay?       
+        unless @order.completed?
           @order.update_attribute("user_id", current_user) if current_user
           
           checkout_info = params[:new_order_notification]
-          checkout_attrs = {
-            :email => checkout_info[:email],
-            :ip_address => request.env['REMOTE_ADDR']         
-          }        
-          @order.checkout.update_attributes(checkout_attrs)
-          
+
           order_attrs = {
+            :email => checkout_info[:email],
+            :ip_address => request.env['REMOTE_ADDR'] 
             :adjustment_total => notification.order_adjustment.adjustment_total.cents.to_f / 100, 
             :buyer_id => notification.buyer_id,
             :financial_order_state => notification.financial_order_state, 
@@ -34,17 +31,17 @@ class GoogleCheckoutNotificationController < ApplicationController
           new_billing_address = 
             create_spree_address_from_google_address(notification.buyer_billing_address)
                
-          @order.checkout.update_attribute(:bill_address_id,  new_billing_address.id)        
+          @order.update_attribute(:bill_address_id,  new_billing_address.id)
           
           new_shipping_address = 
             create_spree_address_from_google_address(notification.buyer_shipping_address)
                     
-          @order.shipment.update_attribute(:address_id,  new_shipping_address.id)
+          @order.update_attribute(:address_id,  new_shipping_address.id)
           
           ship_method = ShippingMethod.find_by_name(notification.order_adjustment.shipping.name)      
-          @order.shipment.update_attribute(:shipping_method, ship_method)
+          @order.update_attribute(:shipping_method, ship_method)
           
-          @order.complete!
+          @order.next while @order.state != "complete"
         end
         render :text => 'proccess Google4R::Checkout::NewOrderNotification' and return
       end

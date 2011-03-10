@@ -1,4 +1,4 @@
-<% if order.google_order_number.present? %>
+<% if Billing::GoogleCheckout.current && order.google_order_number.present? %>
 	<td><% if order.allow_pay? && order.state!='paid' %>
 	    <%= link_to(t("google_checkout.charge"), charge_google_order_admin_order_path(order)) %>
 	  <% end %>
