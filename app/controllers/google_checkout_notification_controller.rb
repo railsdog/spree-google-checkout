@@ -1,6 +1,8 @@
 class GoogleCheckoutNotificationController < ApplicationController
   protect_from_forgery :except => :create
   include GoogleCheckout::ControllerExtender
+  include SslRequirement
+  ssl_required :create
   
   def create
     frontend = get_google_checkout_frontend
