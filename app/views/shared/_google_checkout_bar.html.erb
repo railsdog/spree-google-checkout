@@ -5,9 +5,9 @@
 %>
   <div id='google_checkout_button'>
     <form method="POST" action="<%= handler_url %>">
-      <%= hidden_field_tag :cart, Base64.b64encode(@response).chomp %>
+      <%= hidden_field_tag :cart, Base64.encode64(@response).chomp %>
       <%= hidden_field_tag :signature, signature(@response, Billing::GoogleCheckout.current[:merchant_key]) %>
       <%= google_checkout_button(Billing::GoogleCheckout.current[:merchant_id]) %>
     </form>
   </div>
-<% end -%>	 
+<% end -%>
