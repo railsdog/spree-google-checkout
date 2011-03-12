@@ -11,9 +11,11 @@ Admin::OrdersController.class_eval do
         order.amount = Money.new(100 * o.total, Billing::GoogleCheckout.current[:currency])
         res = order.send_to_google_checkout
         
-        payment = Payment.new(:amount => o.total)
+        payment = Payment.new(:amount => o.total, :payment_method_id => Billing::GoogleCheckout.current.id)
         payment.order = o
         payment.save
+        payment.started_processing
+        payment.complete
         flash[:notice] = t('google_checkout.order_charged')
       end
     rescue
