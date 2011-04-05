@@ -4,7 +4,7 @@ class SpreeGoogleCheckoutHooks < Spree::ThemeSupport::HookListener
   insert_after :admin_orders_index_headers do
     %(
       <% if Billing::GoogleCheckout.current -%>
-      <th colspan="3"><%= t(:google_checkout_status) %></th>
+      <th><%= t(:google_checkout_status) %></th>
       <% end -%>
     )
   end
