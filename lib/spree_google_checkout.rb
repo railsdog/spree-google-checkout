@@ -1,7 +1,6 @@
 require 'google4r/checkout'
 require 'hmac-sha1'
 require 'spree_core'
-require 'spree_google_checkout_hooks'
 
 module SpreeGoogleCheckout
   class Engine < Rails::Engine

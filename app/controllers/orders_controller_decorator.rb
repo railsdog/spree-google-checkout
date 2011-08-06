@@ -26,7 +26,8 @@ OrdersController.class_eval do
      
         checkout_command.create_shipping_method(Google4R::Checkout::FlatRateShipping) do |shipping_method|    
           shipping_method.name = ship_method.name
-          shipping_method.price = Money.new(100*ship_method.calculator.compute(fake_shipment), Billing::GoogleCheckout.current[:currency])
+          ship_method_price = ship_method.calculator.compute(fake_shipment) || 0
+          shipping_method.price = Money.new(100*ship_method_price, Billing::GoogleCheckout.current[:currency])
           shipping_method.create_allowed_area(Google4R::Checkout::UsCountryArea) do |area|
             area.area = Google4R::Checkout::UsCountryArea::ALL
           end
