@@ -1,3 +1,5 @@
 "0.10.x" => { :branch => "0-11-stable" }
 "0.11.x" => { :branch => "0-11-stable" }
-"0.50.x" => { :branch => "master" }
+"0.50.x" => { :branch => "0-50-x" }
+"0.60.x" => { :branch => "0-50-x" }
+"0.70.x" => { :branch => "master" }
