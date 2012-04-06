@@ -22,5 +22,6 @@ Gem::Specification.new do |s|
   s.add_dependency('oauth', '>= 0.4.4')
   s.add_dependency('google4r-checkout', '>= 1.1.1')
   s.add_dependency('ruby-hmac', '>= 0.3.2')
+  s.add_dependency('money', '<= 3.7.1')
   
 end
