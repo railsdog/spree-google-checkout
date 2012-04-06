@@ -1,4 +1,4 @@
-OrdersController.class_eval do
+Spree::OrdersController.class_eval do
   helper :google_checkout
   include GoogleCheckout::ControllerExtender
   before_filter :clear_session, :only => [:show]
