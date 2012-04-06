@@ -10,7 +10,7 @@ namespace :spree_google_checkout do
     task :migrations do
       source = File.join(File.dirname(__FILE__), '..', '..', 'db')
       destination = File.join(Rails.root, 'db')
-      Spree::FileUtilz.mirror_files(source, destination)
+      Spree::Core::FileUtilz.mirror_files(source, destination)
     end
 
     desc "Copies all assets (NOTE: This will be obsolete with Rails 3.1)"
@@ -18,7 +18,7 @@ namespace :spree_google_checkout do
       source = File.join(File.dirname(__FILE__), '..', '..', 'public')
       destination = File.join(Rails.root, 'public')
       puts "INFO: Mirroring assets from #{source} to #{destination}"
-      Spree::FileUtilz.mirror_files(source, destination)
+      Spree::Core::FileUtilz.mirror_files(source, destination)
     end
   end
 
