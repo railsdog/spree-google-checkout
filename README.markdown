@@ -3,7 +3,7 @@ Google Checkout
 
 ### Installation
 
-1. Add `gem 'spree_google_checkout', :git => "git@github.com:BenDavidJamin/spree-google-checkout.git"` to Gemfile
+1. Add `gem 'spree_google_checkout', :git => "git://github.com:railsdog/spree-google-checkout.git"` to Gemfile
 1. Run `rake spree_google_checkout:install`
 1. Run `rake db:migrate`
 1. Create seller account in Google Checkout
