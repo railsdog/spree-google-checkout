@@ -1,4 +1,4 @@
-Rails.application.routes.draw do
+Spree::Core::Engine.routes.prepend do
   resources :google_checkout_notification
   namespace :admin do
     resources :orders do 

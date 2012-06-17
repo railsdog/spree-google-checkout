@@ -1,0 +1,13 @@
+<% if Spree::Billing::GoogleCheckout.current && @order.line_items.present? && @response
+    handler_url = Spree::Billing::GoogleCheckout.current[:use_sandbox] ?
+      "https://sandbox.google.com/checkout/" : "https://checkout.google.com/"   
+    handler_url += "api/checkout/v2/checkout/Merchant/#{Spree::Billing::GoogleCheckout.current[:merchant_id]}"
+%>
+  <div id='google_checkout_button'>
+    <form method="POST" action="<%= handler_url %>">
+      <%= hidden_field_tag :cart, Base64.encode64(@response).chomp %>
+      <%= hidden_field_tag :signature, signature(@response, Spree::Billing::GoogleCheckout.current[:merchant_key]) %>
+      <%= google_checkout_button(Spree::Billing::GoogleCheckout.current[:merchant_id]) %>
+    </form>
+  </div>
+<% end -%>

@@ -1,4 +1,4 @@
-<% if Billing::GoogleCheckout.current && order.google_order_number.present? %>
+<% if Spree::Billing::GoogleCheckout.current && order.google_order_number.present? %>
   <td><p>
     <% if order.completed? && order.state != 'canceled' && order.payment_state != 'paid' %>
       <%= link_to(t("google_checkout.charge"), charge_google_order_admin_order_path(order)) %>

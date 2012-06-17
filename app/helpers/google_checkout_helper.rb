@@ -1,7 +1,7 @@
 module GoogleCheckoutHelper
 
   def google_checkout_button(merchant_id)    
-    img_src = Billing::GoogleCheckout.current[:use_sandbox] ?
+    img_src = Spree::Billing::GoogleCheckout.current[:use_sandbox] ?
       "http://sandbox.google.com/checkout/buttons/checkout.gif" :
       "https://checkout.google.com/buttons/checkout.gif"
     params_hash = {:merchant_id => merchant_id,  

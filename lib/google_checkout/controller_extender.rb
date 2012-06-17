@@ -2,7 +2,7 @@ module GoogleCheckout::ControllerExtender
   protected 
   
   def get_google_checkout_frontend
-    return nil unless integration = Billing::GoogleCheckout.current
+    return nil unless integration = Spree::Billing::GoogleCheckout.current
     #return nil unless load_google_gateway
     gc_config = { 
       :merchant_id  => integration.preferred_merchant_id, 
